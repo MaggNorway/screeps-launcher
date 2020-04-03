@@ -23,8 +23,24 @@ services:
     volumes:
       - redis-data:/data
     restart: unless-stopped
+    
+  graphite:
+    image: graphiteapp/graphite-statsd
+    volumes:
+      - graphite_data:/opt/graphite/storage/whisper
+    restart: unless-stopped
 
+  grafana:
+    image: grafana/grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    restart: unless-stopped      
+    
 volumes:
   redis-data:
   mongo-data:
   screeps-data:
+  graphite_data:
+  grafana_data:
