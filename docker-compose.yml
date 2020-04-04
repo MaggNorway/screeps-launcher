@@ -34,13 +34,24 @@ services:
     image: grafana/grafana
     volumes:
       - grafana_data:/var/lib/grafana
+      - ./stats/grafana.ini:/etc/grafana/grafana.ini
+      - ./stats/grafana.prov.yaml:/etc/grafana/provisioning/default.yaml
     ports:
       - "3000:3000"
     restart: unless-stopped      
     
+  stats-uploader:
+      image: screeps-stats-uploader
+      environment:
+        GRAPHITE_HOST: 'graphite'
+      volumes:
+        - stats-uploader:/app
+      restart: unless-stopped
+
 volumes:
   redis-data:
   mongo-data:
   screeps-data:
   graphite_data:
   grafana_data:
+  stats-uploader:
